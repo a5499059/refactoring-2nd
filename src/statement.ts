@@ -10,21 +10,21 @@ export function statement(invoice: Invoice, plays :Plays): string {
     currency: "USD",
     minimumFractionDigits: 2,
   }).format;
-  
+
   const playFor = (aPerformance : Performance):Play => {
     return plays[aPerformance.playID];
   }
 
   for (let perf of invoice.performances) {
-    const play: Play = playFor(perf);
-    let thisAmount : number = amountFor(play,perf);
+
+    let thisAmount : number = amountFor(playFor(perf),perf);
     
     // ボリューム特典のポイント加算
     volumeCredits += Math.max(perf.audience - 30, 0);
     //喜劇のときは１０人に付き、さらにポイント加算
-    if ("comedy" === play.type) volumeCredits += Math.floor(perf.audience / 5);
+    if ("comedy" === playFor(perf).type) volumeCredits += Math.floor(perf.audience / 5);
     //注文の内訳出力
-    result += ` ${play.name}: ${format(thisAmount / 100)} (${
+    result += ` ${playFor(perf).name}: ${format(thisAmount / 100)} (${
       perf.audience
     } seats)\n`;
     totalAmout += thisAmount;
