@@ -10,9 +10,13 @@ export function statement(invoice: Invoice, plays :Plays): string {
     currency: "USD",
     minimumFractionDigits: 2,
   }).format;
+  
+  const playFor = (aPerformance : Performance):Play => {
+    return plays[aPerformance.playID];
+  }
 
   for (let perf of invoice.performances) {
-    const play: Play = plays[perf.playID];
+    const play: Play = playFor(perf);
     let thisAmount : number = amountFor(play,perf);
     
     // ボリューム特典のポイント加算
@@ -28,26 +32,28 @@ export function statement(invoice: Invoice, plays :Plays): string {
   result += `Amount owed is ${format(totalAmout / 100)}\n`;
   result += `You earned ${volumeCredits} credits\n`;
   return result;
+
 }
 
-const amountFor = (play:Play, perf:Performance) :number => {
-  let thisAmount : number  = 0;
+const amountFor = (play:Play, aPerformance:Performance) :number => {
+  let result : number  = 0;
   switch (play.type) {
     case "tragedy": //悲劇ならまずは40,000円で３０人まで。追加分一人あたり１０００円
-      thisAmount = 40000;
-      if (perf.audience > 30) {
-        thisAmount += 1000 * (perf.audience - 30); //
+      result = 40000;
+      if (aPerformance.audience > 30) {
+        result += 1000 * (aPerformance.audience - 30); //
       }
       break;
     case "comedy": //喜劇ならまずは30,000円＋一人あたり３００円（ただし２０人まで）。２１人以上の場合は、追加10,000円と追加一人あたりさらに＋５００円。
-      thisAmount = 30000;
-      if (perf.audience > 20) {
-        thisAmount += 10000 + 500 * (perf.audience - 20); //
+      result = 30000;
+      if (aPerformance.audience > 20) {
+        result += 10000 + 500 * (aPerformance.audience - 20); //
       }
-      thisAmount += 300 * perf.audience;
+      result += 300 * aPerformance.audience;
       break;
     default:
       throw new Error(`unknown type: ${play.type}`);
   }
-  return thisAmount;
+  return result;
 };
+
