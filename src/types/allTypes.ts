@@ -12,3 +12,7 @@ export type Performance = {
     name: string;
     type: string;
   }
+
+  export type Plays = {
+    [playID : string]:Play
+  }
