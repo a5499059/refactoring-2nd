@@ -30,13 +30,12 @@ export function statement(invoice: Invoice, plays: Plays): string {
   };
 
   //fuction statement
-  const volumeCreditsFor = (perf: Performance) :number => {
-    let volumeCredits :number = 0;
-    volumeCredits += Math.max(perf.audience - 30, 0);
-    //喜劇のときは１０人に付き、さらにポイント加算
-    if ("comedy" === playFor(perf).type)
-      volumeCredits += Math.floor(perf.audience / 5);
-    return volumeCredits;
+  const volumeCreditsFor = (aPerformance: Performance) :number => {
+    let result :number = 0;
+    result += Math.max(aPerformance.audience - 30, 0);
+    if ("comedy" === playFor(aPerformance).type)
+    result += Math.floor(aPerformance.audience / 5);
+    return result;
   }
 
   //top level
@@ -51,7 +50,7 @@ export function statement(invoice: Invoice, plays: Plays): string {
   }).format;
 
   for (let perf of invoice.performances) {
-    
+
     volumeCredits += volumeCreditsFor(perf);
 
     //注文の内訳出力
