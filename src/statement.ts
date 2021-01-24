@@ -29,6 +29,16 @@ export function statement(invoice: Invoice, plays: Plays): string {
     return result;
   };
 
+  //fuction statement
+  const volumeCreditsFor = (perf: Performance) :number => {
+    let volumeCredits :number = 0;
+    volumeCredits += Math.max(perf.audience - 30, 0);
+    //喜劇のときは１０人に付き、さらにポイント加算
+    if ("comedy" === playFor(perf).type)
+      volumeCredits += Math.floor(perf.audience / 5);
+    return volumeCredits;
+  }
+
   //top level
   let totalAmout: number = 0;
   let volumeCredits: number = 0;
@@ -41,11 +51,9 @@ export function statement(invoice: Invoice, plays: Plays): string {
   }).format;
 
   for (let perf of invoice.performances) {
-    // ボリューム特典のポイント加算
-    volumeCredits += Math.max(perf.audience - 30, 0);
-    //喜劇のときは１０人に付き、さらにポイント加算
-    if ("comedy" === playFor(perf).type)
-      volumeCredits += Math.floor(perf.audience / 5);
+    
+    volumeCredits += volumeCreditsFor(perf);
+
     //注文の内訳出力
     result += ` ${playFor(perf).name}: ${format(amountFor(perf) / 100)} (${
       perf.audience
