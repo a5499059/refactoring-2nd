@@ -56,6 +56,16 @@ export function statement(invoice: Invoice, plays: Plays): string {
     return volumeCredits;
   }
 
+  //function statement
+  const soySauce = () :number => {
+    let totalAmout: number = 0;
+    for (let perf of invoice.performances) {
+        totalAmout += amountFor(perf);
+    }
+    return totalAmout;
+  }
+
+
   //top level
 
 
@@ -67,10 +77,8 @@ export function statement(invoice: Invoice, plays: Plays): string {
       perf.audience
     } seats)\n`;
   }
-  let totalAmout: number = 0;
-  for (let perf of invoice.performances) {
-      totalAmout += amountFor(perf);
-  }
+  let totalAmout: number = soySauce();
+  
   result += `Amount owed is ${usd(totalAmout)}\n`;
   result += `You earned ${totalVolumeCredits()} credits\n`;
   return result;
