@@ -49,20 +49,20 @@ export function statement(invoice: Invoice, plays: Plays): string {
 
   //function statement
   const totalVolumeCredits = () :number => {
-    let volumeCredits= 0;
+    let result= 0;
     for (let perf of invoice.performances) {
-      volumeCredits += volumeCreditsFor(perf);
+      result += volumeCreditsFor(perf);
     }
-    return volumeCredits;
+    return result;
   }
 
   //function statement
   const totalAmount = () :number => {
-    let totalAmout: number = 0;
+    let result: number = 0;
     for (let perf of invoice.performances) {
-        totalAmout += amountFor(perf);
+      result += amountFor(perf);
     }
-    return totalAmout;
+    return result;
   }
 
 
