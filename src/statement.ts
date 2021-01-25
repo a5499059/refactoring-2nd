@@ -57,7 +57,7 @@ export function statement(invoice: Invoice, plays: Plays): string {
   }
 
   //top level
-  let totalAmout: number = 0;
+
 
   let result: string = `Statement for ${invoice.customer}\n`;
 
@@ -67,6 +67,7 @@ export function statement(invoice: Invoice, plays: Plays): string {
       perf.audience
     } seats)\n`;
   }
+  let totalAmout: number = 0;
   for (let perf of invoice.performances) {
       totalAmout += amountFor(perf);
   }
