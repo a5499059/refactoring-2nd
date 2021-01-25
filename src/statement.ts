@@ -7,7 +7,7 @@ export function statement(invoice: Invoice, plays: Plays): string {
   };
 
   //function statement
-  const amountFor = ( aPerformance: Performance): number => {
+  const amountFor = (aPerformance: Performance): number => {
     let result: number = 0;
     switch (playFor(aPerformance).type) {
       case "tragedy": //悲劇ならまずは40,000円で３０人まで。追加分一人あたり１０００円
@@ -30,36 +30,45 @@ export function statement(invoice: Invoice, plays: Plays): string {
   };
 
   //fuction statement
-  const volumeCreditsFor = (aPerformance: Performance) :number => {
-    let result :number = 0;
+  const volumeCreditsFor = (aPerformance: Performance): number => {
+    let result: number = 0;
     result += Math.max(aPerformance.audience - 30, 0);
     if ("comedy" === playFor(aPerformance).type)
-    result += Math.floor(aPerformance.audience / 5);
+      result += Math.floor(aPerformance.audience / 5);
     return result;
+  };
+
+  //fuction statement
+  const usd = (aNumber: number): string => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 2,
+    }).format(aNumber/100);
+  };
+
+  //function statement
+  const totalVolumeCredits = () :number => {
+    let volumeCredits= 0;
+    for (let perf of invoice.performances) {
+      volumeCredits += volumeCreditsFor(perf);
+    }
+    return volumeCredits;
   }
 
   //top level
   let totalAmout: number = 0;
-  let volumeCredits: number = 0;
+
   let result: string = `Statement for ${invoice.customer}\n`;
 
-  const format = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-  }).format;
-
   for (let perf of invoice.performances) {
-
-    volumeCredits += volumeCreditsFor(perf);
-
     //注文の内訳出力
-    result += ` ${playFor(perf).name}: ${format(amountFor(perf) / 100)} (${
+    result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${
       perf.audience
     } seats)\n`;
     totalAmout += amountFor(perf);
   }
-  result += `Amount owed is ${format(totalAmout / 100)}\n`;
-  result += `You earned ${volumeCredits} credits\n`;
+  result += `Amount owed is ${usd(totalAmout)}\n`;
+  result += `You earned ${totalVolumeCredits()} credits\n`;
   return result;
 }
