@@ -57,7 +57,7 @@ export function statement(invoice: Invoice, plays: Plays): string {
   }
 
   //function statement
-  const soySauce = () :number => {
+  const totalAmount = () :number => {
     let totalAmout: number = 0;
     for (let perf of invoice.performances) {
         totalAmout += amountFor(perf);
@@ -77,9 +77,8 @@ export function statement(invoice: Invoice, plays: Plays): string {
       perf.audience
     } seats)\n`;
   }
-  let totalAmout: number = soySauce();
-  
-  result += `Amount owed is ${usd(totalAmout)}\n`;
+
+  result += `Amount owed is ${usd(totalAmount())}\n`;
   result += `You earned ${totalVolumeCredits()} credits\n`;
   return result;
 }
