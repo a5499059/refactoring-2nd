@@ -2,8 +2,13 @@ import { Invoice, Performance, Play, Plays } from "./types/allTypes";
 
 
 export function statement(invoice: Invoice, plays: Plays): string {
+  const  enrichPerformance = (aPerformance) =>{
+    const result = Object.assign({}, aPerformance);
+    return result;
+  } 
+
   const customer = invoice.customer;
-  const performances = invoice.performances;
+  const performances = invoice.performances.map(enrichPerformance);
   const statementData :Invoice = {customer,performances};
 
   return renderPlainText(statementData,plays);
