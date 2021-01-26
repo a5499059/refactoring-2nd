@@ -2,11 +2,14 @@ import { Invoice, Performance, Play, Plays } from "./types/allTypes";
 
 
 export function statement(invoice: Invoice, plays: Plays): string {
-  const statementData = {};
-  return renderPlainText(statementData,invoice,plays);
+  const customer = invoice.customer;
+  const performances = invoice.performances;
+  const statementData :Invoice = {customer,performances};
+
+  return renderPlainText(statementData,plays);
 }
 
-export function renderPlainText(data, invoice: Invoice, plays: Plays): string {
+export function renderPlainText(data, plays: Plays): string {
   //function statement
   const playFor = (aPerformance: Performance): Play => {
     return plays[aPerformance.playID];
@@ -56,7 +59,7 @@ export function renderPlainText(data, invoice: Invoice, plays: Plays): string {
   //function statement
   const totalVolumeCredits = () :number => {
     let result= 0;
-    for (let perf of invoice.performances) {
+    for (let perf of data.performances) {
       result += volumeCreditsFor(perf);
     }
     return result;
@@ -65,7 +68,7 @@ export function renderPlainText(data, invoice: Invoice, plays: Plays): string {
   //function statement
   const totalAmount = () :number => {
     let result: number = 0;
-    for (let perf of invoice.performances) {
+    for (let perf of data.performances) {
       result += amountFor(perf);
     }
     return result;
@@ -75,9 +78,9 @@ export function renderPlainText(data, invoice: Invoice, plays: Plays): string {
   //top level
 
 
-  let result: string = `Statement for ${invoice.customer}\n`;
+  let result: string = `Statement for ${data.customer}\n`;
 
-  for (let perf of invoice.performances) {
+  for (let perf of data.performances) {
     //注文の内訳出力
     result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${
       perf.audience
