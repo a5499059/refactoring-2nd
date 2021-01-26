@@ -2,10 +2,11 @@ import { Invoice, Performance, Play, Plays } from "./types/allTypes";
 
 
 export function statement(invoice: Invoice, plays: Plays): string {
-  return renderPlainText(invoice,plays);
+  const statementData = {};
+  return renderPlainText(statementData,invoice,plays);
 }
 
-export function renderPlainText(invoice: Invoice, plays: Plays): string {
+export function renderPlainText(data, invoice: Invoice, plays: Plays): string {
   //function statement
   const playFor = (aPerformance: Performance): Play => {
     return plays[aPerformance.playID];
