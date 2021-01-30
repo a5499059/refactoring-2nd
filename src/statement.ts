@@ -5,21 +5,13 @@ export function statement(invoice: Invoice, plays: Plays): string {
   const  enrichPerformance = (aPerformance) =>{
     const result = Object.assign({}, aPerformance);
     result.play = playFor(result);
+    result.amount = amountFor(result);
     return result;
   } 
   //function statement
   const playFor = (aPerformance: Performance): Play => {
     return plays[aPerformance.playID];
   };
-
-  const customer = invoice.customer;
-  const performances = invoice.performances.map(enrichPerformance);
-  const statementData :Invoice = {customer,performances};
-
-  return renderPlainText(statementData,plays);
-}
-
-export function renderPlainText(data, plays: Plays): string {
   //function statement
   const amountFor = (aPerformance: any): number => {
     let result: number = 0;
@@ -43,6 +35,15 @@ export function renderPlainText(data, plays: Plays): string {
     return result;
   };
 
+
+  const customer = invoice.customer;
+  const performances = invoice.performances.map(enrichPerformance);
+  const statementData :Invoice = {customer,performances};
+
+  return renderPlainText(statementData,plays);
+}
+
+export function renderPlainText(data, plays: Plays): string {
   //fuction statement
   const volumeCreditsFor = (aPerformance: any): number => {
     let result: number = 0;
@@ -74,7 +75,7 @@ export function renderPlainText(data, plays: Plays): string {
   const totalAmount = () :number => {
     let result: number = 0;
     for (let perf of data.performances) {
-      result += amountFor(perf);
+      result += perf.amount;
     }
     return result;
   }
@@ -87,7 +88,7 @@ export function renderPlainText(data, plays: Plays): string {
 
   for (let perf of data.performances) {
     //注文の内訳出力
-    result += ` ${perf.play.name}: ${usd(amountFor(perf))} (${
+    result += ` ${perf.play.name}: ${usd(perf.amount)} (${
       perf.audience
     } seats)\n`;
   }
