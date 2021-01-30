@@ -60,10 +60,10 @@ export function statement(invoice: Invoice, plays: Plays): string {
   statementData.totalAmount = totalAmount(statementData);
   statementData.totalVolumeCredits = totalVolumeCredits(statementData);
 
-  return renderPlainText(statementData, plays);
+  return renderPlainText(statementData);
 }
 
-export function renderPlainText(data, plays: Plays): string {
+export function renderPlainText(data): string {
   //fuction statement
   const usd = (aNumber: number): string => {
     return new Intl.NumberFormat("en-US", {
