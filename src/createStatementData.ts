@@ -1,6 +1,7 @@
 import { Invoice, Performance, Play, Plays } from "./types/allTypes";
 
 export function createStatementData(invoice, plays) {
+  //function statement
   const enrichPerformance = (aPerformance) => {
     const result = Object.assign({}, aPerformance);
     result.play = playFor(result);
@@ -54,11 +55,11 @@ export function createStatementData(invoice, plays) {
     return data.performances.reduce((total, p) => total + p.amount, 0);
   };
 
-  const customer = invoice.customer;
-  const performances = invoice.performances.map(enrichPerformance);
-  const statementData: any = { customer, performances };
-  statementData.totalAmount = totalAmount(statementData);
-  statementData.totalVolumeCredits = totalVolumeCredits(statementData);
+  const result: any = {};
+  result.customer = invoice.customer;
+  result.performances = invoice.performances.map(enrichPerformance);
+  result.totalAmount = totalAmount(result);
+  result.totalVolumeCredits = totalVolumeCredits(result);
 
-return statementData;
+  return result;
 }
