@@ -1,14 +1,13 @@
 import { Invoice, Performance, Play, Plays } from "./types/allTypes";
 
-
 export function statement(invoice: Invoice, plays: Plays): string {
-  const  enrichPerformance = (aPerformance) =>{
+  const enrichPerformance = (aPerformance) => {
     const result = Object.assign({}, aPerformance);
     result.play = playFor(result);
     result.amount = amountFor(result);
     result.volumeCredits = volumeCreditsFor(result);
     return result;
-  } 
+  };
   //function statement
   const playFor = (aPerformance: Performance): Play => {
     return plays[aPerformance.playID];
@@ -46,33 +45,22 @@ export function statement(invoice: Invoice, plays: Plays): string {
   };
 
   //function statement
-  const totalVolumeCredits = (data) :number => {
-    let result= 0;
-    for (let perf of data.performances) {
-      result += perf.volumeCredits;
-    }
-    return result;
-  }
+  const totalVolumeCredits = (data): number => {
+    return data.performances.reduce((total, p) => total + p.volumeCredits, 0);
+  };
 
   //function statement
-  const totalAmount = (data) :number => {
-    let result: number = 0;
-    for (let perf of data.performances) {
-      result += perf.amount;
-    }
-    return result;
-  }
-
-
-
+  const totalAmount = (data): number => {
+    return data.performances.reduce((total, p) => total + p.amount, 0);
+  };
 
   const customer = invoice.customer;
   const performances = invoice.performances.map(enrichPerformance);
-  const statementData :any = {customer,performances};
+  const statementData: any = { customer, performances };
   statementData.totalAmount = totalAmount(statementData);
   statementData.totalVolumeCredits = totalVolumeCredits(statementData);
 
-  return renderPlainText(statementData,plays);
+  return renderPlainText(statementData, plays);
 }
 
 export function renderPlainText(data, plays: Plays): string {
@@ -82,11 +70,10 @@ export function renderPlainText(data, plays: Plays): string {
       style: "currency",
       currency: "USD",
       minimumFractionDigits: 2,
-    }).format(aNumber/100);
+    }).format(aNumber / 100);
   };
 
   //top level
-
 
   let result: string = `Statement for ${data.customer}\n`;
 
