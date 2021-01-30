@@ -6,6 +6,7 @@ export function statement(invoice: Invoice, plays: Plays): string {
     const result = Object.assign({}, aPerformance);
     result.play = playFor(result);
     result.amount = amountFor(result);
+    result.volumeCredits = volumeCreditsFor(result);
     return result;
   } 
   //function statement
@@ -35,15 +36,6 @@ export function statement(invoice: Invoice, plays: Plays): string {
     return result;
   };
 
-
-  const customer = invoice.customer;
-  const performances = invoice.performances.map(enrichPerformance);
-  const statementData :Invoice = {customer,performances};
-
-  return renderPlainText(statementData,plays);
-}
-
-export function renderPlainText(data, plays: Plays): string {
   //fuction statement
   const volumeCreditsFor = (aPerformance: any): number => {
     let result: number = 0;
@@ -53,6 +45,16 @@ export function renderPlainText(data, plays: Plays): string {
     return result;
   };
 
+
+
+  const customer = invoice.customer;
+  const performances = invoice.performances.map(enrichPerformance);
+  const statementData :Invoice = {customer,performances};
+
+  return renderPlainText(statementData,plays);
+}
+
+export function renderPlainText(data, plays: Plays): string {
   //fuction statement
   const usd = (aNumber: number): string => {
     return new Intl.NumberFormat("en-US", {
@@ -66,7 +68,7 @@ export function renderPlainText(data, plays: Plays): string {
   const totalVolumeCredits = () :number => {
     let result= 0;
     for (let perf of data.performances) {
-      result += volumeCreditsFor(perf);
+      result += perf.volumeCredits;
     }
     return result;
   }
