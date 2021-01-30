@@ -4,8 +4,13 @@ import { Invoice, Performance, Play, Plays } from "./types/allTypes";
 export function statement(invoice: Invoice, plays: Plays): string {
   const  enrichPerformance = (aPerformance) =>{
     const result = Object.assign({}, aPerformance);
+    result.play = playFor(result);
     return result;
   } 
+  //function statement
+  const playFor = (aPerformance: Performance): Play => {
+    return plays[aPerformance.playID];
+  };
 
   const customer = invoice.customer;
   const performances = invoice.performances.map(enrichPerformance);
@@ -16,14 +21,9 @@ export function statement(invoice: Invoice, plays: Plays): string {
 
 export function renderPlainText(data, plays: Plays): string {
   //function statement
-  const playFor = (aPerformance: Performance): Play => {
-    return plays[aPerformance.playID];
-  };
-
-  //function statement
-  const amountFor = (aPerformance: Performance): number => {
+  const amountFor = (aPerformance: any): number => {
     let result: number = 0;
-    switch (playFor(aPerformance).type) {
+    switch (aPerformance.play.type) {
       case "tragedy": //悲劇ならまずは40,000円で３０人まで。追加分一人あたり１０００円
         result = 40000;
         if (aPerformance.audience > 30) {
@@ -38,16 +38,16 @@ export function renderPlainText(data, plays: Plays): string {
         result += 300 * aPerformance.audience;
         break;
       default:
-        throw new Error(`unknown type: ${playFor(aPerformance).type}`);
+        throw new Error(`unknown type: ${aPerformance.play.type}`);
     }
     return result;
   };
 
   //fuction statement
-  const volumeCreditsFor = (aPerformance: Performance): number => {
+  const volumeCreditsFor = (aPerformance: any): number => {
     let result: number = 0;
     result += Math.max(aPerformance.audience - 30, 0);
-    if ("comedy" === playFor(aPerformance).type)
+    if ("comedy" === aPerformance.play.type)
       result += Math.floor(aPerformance.audience / 5);
     return result;
   };
@@ -87,7 +87,7 @@ export function renderPlainText(data, plays: Plays): string {
 
   for (let perf of data.performances) {
     //注文の内訳出力
-    result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${
+    result += ` ${perf.play.name}: ${usd(amountFor(perf))} (${
       perf.audience
     } seats)\n`;
   }
