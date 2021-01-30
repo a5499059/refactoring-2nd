@@ -45,11 +45,32 @@ export function statement(invoice: Invoice, plays: Plays): string {
     return result;
   };
 
+  //function statement
+  const totalVolumeCredits = (data) :number => {
+    let result= 0;
+    for (let perf of data.performances) {
+      result += perf.volumeCredits;
+    }
+    return result;
+  }
+
+  //function statement
+  const totalAmount = (data) :number => {
+    let result: number = 0;
+    for (let perf of data.performances) {
+      result += perf.amount;
+    }
+    return result;
+  }
+
+
 
 
   const customer = invoice.customer;
   const performances = invoice.performances.map(enrichPerformance);
-  const statementData :Invoice = {customer,performances};
+  const statementData :any = {customer,performances};
+  statementData.totalAmount = totalAmount(statementData);
+  statementData.totalVolumeCredits = totalVolumeCredits(statementData);
 
   return renderPlainText(statementData,plays);
 }
@@ -64,25 +85,6 @@ export function renderPlainText(data, plays: Plays): string {
     }).format(aNumber/100);
   };
 
-  //function statement
-  const totalVolumeCredits = () :number => {
-    let result= 0;
-    for (let perf of data.performances) {
-      result += perf.volumeCredits;
-    }
-    return result;
-  }
-
-  //function statement
-  const totalAmount = () :number => {
-    let result: number = 0;
-    for (let perf of data.performances) {
-      result += perf.amount;
-    }
-    return result;
-  }
-
-
   //top level
 
 
@@ -95,7 +97,7 @@ export function renderPlainText(data, plays: Plays): string {
     } seats)\n`;
   }
 
-  result += `Amount owed is ${usd(totalAmount())}\n`;
-  result += `You earned ${totalVolumeCredits()} credits\n`;
+  result += `Amount owed is ${usd(data.totalAmount)}\n`;
+  result += `You earned ${data.totalVolumeCredits} credits\n`;
   return result;
 }
