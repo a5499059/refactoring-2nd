@@ -1,6 +1,10 @@
 import { Invoice, Performance, Play, Plays } from "./types/allTypes";
 
 export function statement(invoice: Invoice, plays: Plays): string {
+  return renderPlainText(createStatementData(invoice, plays));
+}
+
+export function createStatementData(invoice, plays) {
   const enrichPerformance = (aPerformance) => {
     const result = Object.assign({}, aPerformance);
     result.play = playFor(result);
@@ -60,7 +64,7 @@ export function statement(invoice: Invoice, plays: Plays): string {
   statementData.totalAmount = totalAmount(statementData);
   statementData.totalVolumeCredits = totalVolumeCredits(statementData);
 
-  return renderPlainText(statementData);
+return statementData;
 }
 
 export function renderPlainText(data): string {
