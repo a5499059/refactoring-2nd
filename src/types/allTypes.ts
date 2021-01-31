@@ -23,7 +23,9 @@ export type PerformanceStatementData = Performance & {
   amount?: number;
   volumeCredits?: number;
 };
-export type PerformanceStatementDatas = [PerformanceStatementData];
+export type PerformanceStatementDatas = {
+  performances: [PerformanceStatementData];
+};
 
 export type StatementData = {
   customer: string;
