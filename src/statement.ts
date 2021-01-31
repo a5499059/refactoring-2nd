@@ -1,19 +1,20 @@
 import { Invoice, Performance, Play, Plays } from "./types/allTypes";
-import {createStatementData} from "./createStatementData";
+import { createStatementData } from "./createStatementData";
 
 export function statement(invoice: Invoice, plays: Plays): string {
   return renderPlainText(createStatementData(invoice, plays));
 }
 
+export function usd(aNumber: number): string {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+  }).format(aNumber / 100);
+}
+
 export function renderPlainText(data): string {
   //fuction statement
-  const usd = (aNumber: number): string => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 2,
-    }).format(aNumber / 100);
-  };
 
   //top level
 

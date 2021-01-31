@@ -55,6 +55,7 @@ export function createStatementData(invoice, plays) {
     return data.performances.reduce((total, p) => total + p.amount, 0);
   };
 
+  //main
   const result: any = {};
   result.customer = invoice.customer;
   result.performances = invoice.performances.map(enrichPerformance);
