@@ -1,10 +1,4 @@
-import {
-  Invoice,
-  Performance,
-  Play,
-  Plays,
-  StatementData,
-} from "./types/allTypes";
+import { Invoice, Plays, StatementData } from "./types/allTypes";
 import { createStatementData } from "./createStatementData";
 
 export function statement(invoice: Invoice, plays: Plays): string {
