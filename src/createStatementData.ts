@@ -1,9 +1,21 @@
-import { Invoice, Performance, Play, Plays } from "./types/allTypes";
+import {
+  Invoice,
+  Performance,
+  Play,
+  Plays,
+  PerformanceStatementData,
+  StatementData,
+} from "./types/allTypes";
 
-export function createStatementData(invoice, plays) {
+export function createStatementData(
+  invoice: Invoice,
+  plays: Plays
+): StatementData {
   //function statement
-  const enrichPerformance = (aPerformance) => {
-    const result = Object.assign({}, aPerformance);
+  const enrichPerformance = (
+    aPerformance: Performance
+  ): PerformanceStatementData => {
+    const result: PerformanceStatementData = Object.assign({}, aPerformance);
     result.play = playFor(result);
     result.amount = amountFor(result);
     result.volumeCredits = volumeCreditsFor(result);
@@ -14,7 +26,7 @@ export function createStatementData(invoice, plays) {
     return plays[aPerformance.playID];
   };
   //function statement
-  const amountFor = (aPerformance: any): number => {
+  const amountFor = (aPerformance: Performance): number => {
     let result: number = 0;
     switch (aPerformance.play.type) {
       case "tragedy": //悲劇ならまずは40,000円で３０人まで。追加分一人あたり１０００円
@@ -37,7 +49,7 @@ export function createStatementData(invoice, plays) {
   };
 
   //fuction statement
-  const volumeCreditsFor = (aPerformance: any): number => {
+  const volumeCreditsFor = (aPerformance: Performance): number => {
     let result: number = 0;
     result += Math.max(aPerformance.audience - 30, 0);
     if ("comedy" === aPerformance.play.type)
@@ -61,6 +73,5 @@ export function createStatementData(invoice, plays) {
   result.performances = invoice.performances.map(enrichPerformance);
   result.totalAmount = totalAmount(result);
   result.totalVolumeCredits = totalVolumeCredits(result);
-
   return result;
 }
