@@ -1,7 +1,8 @@
+import { Performance } from "./types/allTypes";
+
 export class PerformanceCalculator {
-    performance;
-    constructor(aPerformance){
-        this.performance = aPerformance;
-        
-    }
+  performance: Performance;
+  constructor(aPerformance: Performance) {
+    this.performance = aPerformance;
+  }
 }
