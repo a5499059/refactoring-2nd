@@ -16,9 +16,12 @@ export function createStatementData(
   const enrichPerformance = (
     aPerformance: Performance
   ): PerformanceStatementData => {
-    const calculator = new PerformanceCalculator(aPerformance); 
+    const calculator = new PerformanceCalculator(
+      aPerformance,
+      playFor(aPerformance)
+    );
     const result: PerformanceStatementData = Object.assign({}, aPerformance);
-    result.play = playFor(result);
+    result.play = calculator.play;
     result.amount = amountFor(result);
     result.volumeCredits = volumeCreditsFor(result);
     return result;
