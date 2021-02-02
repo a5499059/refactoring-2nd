@@ -1,3 +1,4 @@
+import { PerformanceCalculator } from "./PerformanceCalculator";
 import {
   Invoice,
   Performance,
@@ -15,6 +16,7 @@ export function createStatementData(
   const enrichPerformance = (
     aPerformance: Performance
   ): PerformanceStatementData => {
+    const calculator = new PerformanceCalculator(aPerformance); 
     const result: PerformanceStatementData = Object.assign({}, aPerformance);
     result.play = playFor(result);
     result.amount = amountFor(result);
