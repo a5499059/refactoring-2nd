@@ -32,25 +32,7 @@ export function createStatementData(
   };
   //function statement
   const amountFor = (aPerformance: Performance): number => {
-    let result: number = 0;
-    switch (aPerformance.play.type) {
-      case "tragedy": //悲劇ならまずは40,000円で３０人まで。追加分一人あたり１０００円
-        result = 40000;
-        if (aPerformance.audience > 30) {
-          result += 1000 * (aPerformance.audience - 30); //
-        }
-        break;
-      case "comedy": //喜劇ならまずは30,000円＋一人あたり３００円（ただし２０人まで）。２１人以上の場合は、追加10,000円と追加一人あたりさらに＋５００円。
-        result = 30000;
-        if (aPerformance.audience > 20) {
-          result += 10000 + 500 * (aPerformance.audience - 20); //
-        }
-        result += 300 * aPerformance.audience;
-        break;
-      default:
-        throw new Error(`unknown type: ${aPerformance.play.type}`);
-    }
-    return result;
+    return new PerformanceCalculator(aPerformance,playFor(aPerformance)).amount;
   };
 
   //fuction statement
