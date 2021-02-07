@@ -22,17 +22,13 @@ export function createStatementData(
     );
     const result: PerformanceStatementData = Object.assign({}, aPerformance);
     result.play = calculator.play;
-    result.amount = amountFor(result);
+    result.amount = calculator.amount;
     result.volumeCredits = volumeCreditsFor(result);
     return result;
   };
   //function statement
   const playFor = (aPerformance: Performance): Play => {
     return plays[aPerformance.playID];
-  };
-  //function statement
-  const amountFor = (aPerformance: Performance): number => {
-    return new PerformanceCalculator(aPerformance,playFor(aPerformance)).amount;
   };
 
   //fuction statement
