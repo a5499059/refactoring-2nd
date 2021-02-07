@@ -33,11 +33,7 @@ export function createStatementData(
 
   //fuction statement
   const volumeCreditsFor = (aPerformance: Performance): number => {
-    let result: number = 0;
-    result += Math.max(aPerformance.audience - 30, 0);
-    if ("comedy" === aPerformance.play.type)
-      result += Math.floor(aPerformance.audience / 5);
-    return result;
+    return new PerformanceCalculator(aPerformance,aPerformance.play).volumeCredits;
   };
 
   //function statement
