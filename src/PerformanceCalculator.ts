@@ -38,3 +38,6 @@ export class PerformanceCalculator {
     return result;
   };
 }
+
+export class TragedyCalculator extends PerformanceCalculator{}
+export class ComedyCalculator extends PerformanceCalculator{}
