@@ -9,21 +9,7 @@ export class PerformanceCalculator {
   }
   //function statement
   get amount(): number {
-    let result: number = 0;
-    switch (this.play.type) {
-      case "tragedy":
-        throw new Error("これは使ってはいいけない。想定外の呼び出し。");
-      case "comedy": //喜劇ならまずは30,000円＋一人あたり３００円（ただし２０人まで）。２１人以上の場合は、追加10,000円と追加一人あたりさらに＋５００円。
-        result = 30000;
-        if (this.performance.audience > 20) {
-          result += 10000 + 500 * (this.performance.audience - 20); //
-        }
-        result += 300 * this.performance.audience;
-        break;
-      default:
-        throw new Error(`unknown type: ${this.play.type}`);
-    }
-    return result;
+    throw new Error("これは使ってはいいけない。subClassの責務");
   };
 
   get volumeCredits(): number {
@@ -35,14 +21,23 @@ export class PerformanceCalculator {
   };
 }
 
-export class TragedyCalculator extends PerformanceCalculator{
-  get amount():number {
+export class TragedyCalculator extends PerformanceCalculator {
+  get amount(): number {
     let result: number = 40000;
-      if (this.performance.audience > 30) {
-        result += 1000 * (this.performance.audience - 30); //
-      }
+    if (this.performance.audience > 30) {
+      result += 1000 * (this.performance.audience - 30); //
+    }
     return result;
   }
 }
 
-export class ComedyCalculator extends PerformanceCalculator{}
+export class ComedyCalculator extends PerformanceCalculator {
+  get amount(): number {
+    let result: number = 30000;
+    if (this.performance.audience > 20) {
+      result += 10000 + 500 * (this.performance.audience - 20); //
+    }
+    result += 300 * this.performance.audience;
+    return result;
+  };
+}
