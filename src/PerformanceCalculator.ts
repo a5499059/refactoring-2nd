@@ -7,8 +7,8 @@ export class PerformanceCalculator {
     this.performance = aPerformance;
     this.play = play;
   }
-   //function statement
-   get amount(): number {
+  //function statement
+  get amount(): number {
     let result: number = 0;
     switch (this.play.type) {
       case "tragedy": //悲劇ならまずは40,000円で３０人まで。追加分一人あたり１０００円
@@ -27,6 +27,14 @@ export class PerformanceCalculator {
       default:
         throw new Error(`unknown type: ${this.play.type}`);
     }
+    return result;
+  };
+
+  get volumeCredits(): number {
+    let result: number = 0;
+    result += Math.max(this.performance.audience - 30, 0);
+    if ("comedy" === this.play.type)
+      result += Math.floor(this.performance.audience / 5);
     return result;
   };
 }
