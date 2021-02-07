@@ -1,5 +1,6 @@
-import { Invoice, Plays, StatementData } from "./types/allTypes";
+import { Invoice, Play, Plays, StatementData,Performance } from "./types/allTypes";
 import { createStatementData } from "./createStatementData";
+import { PerformanceCalculator } from "./PerformanceCalculator";
 
 export function statement(invoice: Invoice, plays: Plays): string {
   return renderPlainText(createStatementData(invoice, plays));
@@ -26,4 +27,8 @@ export function usd(aNumber: number): string {
     currency: "USD",
     minimumFractionDigits: 2,
   }).format(aNumber / 100);
+}
+
+export function createPerformanceCalculator(aPerformance:Performance,aPlay:Play){
+  return new PerformanceCalculator(aPerformance,aPlay);
 }
