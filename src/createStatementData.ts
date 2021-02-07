@@ -1,4 +1,5 @@
 import { PerformanceCalculator } from "./PerformanceCalculator";
+import { createPerformanceCalculator } from "./statement";
 import {
   Invoice,
   Performance,
@@ -16,7 +17,7 @@ export function createStatementData(
   const enrichPerformance = (
     aPerformance: Performance
   ): PerformanceStatementData => {
-    const calculator = new PerformanceCalculator(
+    const calculator = createPerformanceCalculator(
       aPerformance,
       playFor(aPerformance)
     );
@@ -30,7 +31,7 @@ export function createStatementData(
   const playFor = (aPerformance: Performance): Play => {
     return plays[aPerformance.playID];
   };
-  
+
   //function statement
   const totalVolumeCredits = (data): number => {
     return data.performances.reduce((total, p) => total + p.volumeCredits, 0);
