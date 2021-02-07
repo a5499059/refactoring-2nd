@@ -1,6 +1,6 @@
 import { Invoice, Play, Plays, StatementData,Performance } from "./types/allTypes";
 import { createStatementData } from "./createStatementData";
-import { PerformanceCalculator } from "./PerformanceCalculator";
+import { ComedyCalculator, PerformanceCalculator, TragedyCalculator } from "./PerformanceCalculator";
 
 export function statement(invoice: Invoice, plays: Plays): string {
   return renderPlainText(createStatementData(invoice, plays));
@@ -30,5 +30,14 @@ export function usd(aNumber: number): string {
 }
 
 export function createPerformanceCalculator(aPerformance:Performance,aPlay:Play){
-  return new PerformanceCalculator(aPerformance,aPlay);
+  switch (aPlay.type) {
+    case "tragedy":
+      return new TragedyCalculator(aPerformance,aPlay);  
+      case "comedy":
+        return new ComedyCalculator(aPerformance,aPlay);  
+      default:
+        throw new Error(`知らん演劇の種類: ${aPlay.type}`);
+  }
 }
+
+
