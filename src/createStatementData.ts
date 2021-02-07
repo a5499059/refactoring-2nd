@@ -23,19 +23,14 @@ export function createStatementData(
     const result: PerformanceStatementData = Object.assign({}, aPerformance);
     result.play = calculator.play;
     result.amount = calculator.amount;
-    result.volumeCredits = volumeCreditsFor(result);
+    result.volumeCredits = calculator.volumeCredits;
     return result;
   };
   //function statement
   const playFor = (aPerformance: Performance): Play => {
     return plays[aPerformance.playID];
   };
-
-  //fuction statement
-  const volumeCreditsFor = (aPerformance: Performance): number => {
-    return new PerformanceCalculator(aPerformance,aPerformance.play).volumeCredits;
-  };
-
+  
   //function statement
   const totalVolumeCredits = (data): number => {
     return data.performances.reduce((total, p) => total + p.volumeCredits, 0);
