@@ -1,4 +1,4 @@
-import { Invoice, Play, Plays, StatementData,Performance } from "./types/allTypes";
+import { Invoice, Play, Plays, StatementData, Performance } from "./types/allTypes";
 import { createStatementData } from "./createStatementData";
 import { ComedyCalculator, PerformanceCalculator, TragedyCalculator } from "./PerformanceCalculator";
 
@@ -11,9 +11,8 @@ export function renderPlainText(data: StatementData): string {
 
   for (let perf of data.performances) {
     //注文の内訳出力
-    result += ` ${perf.play.name}: ${usd(perf.amount)} (${
-      perf.audience
-    } seats)\n`;
+    result += ` ${perf.play.name}: ${usd(perf.amount)} (${perf.audience
+      } seats)\n`;
   }
 
   result += `Amount owed is ${usd(data.totalAmount)}\n`;
@@ -29,14 +28,14 @@ export function usd(aNumber: number): string {
   }).format(aNumber / 100);
 }
 
-export function createPerformanceCalculator(aPerformance:Performance,aPlay:Play){
+export function createPerformanceCalculator(aPerformance: Performance, aPlay: Play) {
   switch (aPlay.type) {
     case "tragedy":
-      return new TragedyCalculator(aPerformance,aPlay);  
-      case "comedy":
-        return new ComedyCalculator(aPerformance,aPlay);  
-      default:
-        throw new Error(`知らん演劇の種類: ${aPlay.type}`);
+      return new TragedyCalculator(aPerformance, aPlay);
+    case "comedy":
+      return new ComedyCalculator(aPerformance, aPlay);
+    default:
+      throw new Error(`知らん演劇の種類: ${aPlay.type}`);
   }
 }
 

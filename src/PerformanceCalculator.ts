@@ -11,12 +11,8 @@ export class PerformanceCalculator {
   get amount(): number {
     let result: number = 0;
     switch (this.play.type) {
-      case "tragedy": //悲劇ならまずは40,000円で３０人まで。追加分一人あたり１０００円
-        result = 40000;
-        if (this.performance.audience > 30) {
-          result += 1000 * (this.performance.audience - 30); //
-        }
-        break;
+      case "tragedy":
+        throw new Error("これは使ってはいいけない。想定外の呼び出し。");
       case "comedy": //喜劇ならまずは30,000円＋一人あたり３００円（ただし２０人まで）。２１人以上の場合は、追加10,000円と追加一人あたりさらに＋５００円。
         result = 30000;
         if (this.performance.audience > 20) {
@@ -39,5 +35,14 @@ export class PerformanceCalculator {
   };
 }
 
-export class TragedyCalculator extends PerformanceCalculator{}
+export class TragedyCalculator extends PerformanceCalculator{
+  get amount():number {
+    let result: number = 40000;
+      if (this.performance.audience > 30) {
+        result += 1000 * (this.performance.audience - 30); //
+      }
+    return result;
+  }
+}
+
 export class ComedyCalculator extends PerformanceCalculator{}
