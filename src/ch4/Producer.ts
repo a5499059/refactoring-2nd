@@ -1,4 +1,3 @@
-
 export class Producer {
     private _province: any;
     private _cost: any;
