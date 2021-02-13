@@ -1,7 +1,7 @@
 import { Producer } from "./Producer";
 
 export class Province {
-    private _name: any;
+    private _name: string;
     private _totalProduction: number;
     private _producers: any[];
     private _demand: any;

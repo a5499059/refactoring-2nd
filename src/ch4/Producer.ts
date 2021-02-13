@@ -1,7 +1,7 @@
 export class Producer {
     private _province: any;
     private _cost: any;
-    private _name: any;
+    private _name: string;
     private _production: any;
     constructor(aProvince, data) {
         this._province = aProvince;
