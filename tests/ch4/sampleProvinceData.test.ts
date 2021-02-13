@@ -1,4 +1,5 @@
-import { Province, sampleProvinceData } from "../../src/ch4/Province"
+import { Province } from "../../src/ch4/Province"
+import { sampleProvinceData } from "../../src/ch4/sampleProvinceData";
 
 describe('province', function() {
     it('shortfall', function() {
